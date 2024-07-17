@@ -26,9 +26,7 @@ app.get('/meeting/:meetingId', (req, res) => {
 io.on('connection', (socket) => {
     console.log('a user connected');
 });
-// Okay, I was just wondering cuz I cant integrate the chat with the accounts
-// yea I know, but I ment the existing server code
-// let me spin up that instance
+
 app.listen(port, () => {
-    console.log(`Appointer Meeting Server listening at http://localhost:${port}`);
+    console.log(`Appointer Meeting Server at http://localhost:${port}`);
 });
