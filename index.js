@@ -15,16 +15,19 @@ app.get('/', (req, res) => {
 
 app.get('/:room', (req, res) => {
     res.render('room', { roomId: req.params.room });
+    console.log(`User connected to room: ${req.params.room}`);
 });
 
 io.on('connection', socket => {
     socket.on('join-room', (roomId, userId) => {
-        socket.join(roomId);
-        socket.to(roomId).broadcast.emit('user-connected', userId);
-
-        console.log(`User ${userId} joined room: ${roomId}`);
-    });
-});
+      socket.join(roomId)
+      socket.to(roomId).broadcast.emit('user-connected', userId)
+  
+      socket.on('disconnect', () => {
+        socket.to(roomId).broadcast.emit('user-disconnected', userId)
+      })
+    })
+  })
 
 server.listen(3000, () => {
     console.log('Server is running on port 3000');
