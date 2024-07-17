@@ -1,17 +1,19 @@
 {
   "name": "appointerwebrtc",
   "version": "1.0.0",
-  "description": "",
+  "description": "appointer's webrtc test",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon index.js"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": ["Webrtc"],
+  "author": "Poyo",
   "license": "ISC",
   "dependencies": {
     "ejs": "^3.1.10",
     "express": "^4.19.2",
-    "socket.io": "^4.7.5"
+    "socket.io": "^4.7.5",
+    "uuid": "^8.3.2"
   }
 }
