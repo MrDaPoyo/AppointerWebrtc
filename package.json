@@ -1,19 +1,10 @@
 {
-  "name": "appointerwebrtc",
+  "name": "video-chat",
   "version": "1.0.0",
-  "description": "appointer's webrtc test",
   "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon index.js"
-  },
-  "keywords": ["Webrtc"],
-  "author": "Poyo",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
-    "ejs": "^3.1.10",
-    "express": "^4.19.2",
-    "socket.io": "^4.7.5",
-    "uuid": "^8.3.2"
+    "express": "^4.17.1",
+    "socket.io": "^2.3.0"
   }
 }

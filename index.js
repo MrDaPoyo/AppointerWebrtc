@@ -1,32 +1,38 @@
-const express = require('express')
-const app = express()
-const server = require('http').Server(app)
-const io = require('socket.io')(server)
-const { v4: uuidV4 } = require('uuid')
-const port = 3000;
+const express = require("express");
+const http = require("http");
+const app = express();
+const server = http.createServer(app);
+const socket = require("socket.io");
+const io = socket(server);
 
-app.use(express.static('public'));
-app.set('view engine', 'ejs')
+const rooms = {};
 
+io.on("connection", socket => {
+    socket.on("join room", roomID => {
+        if (rooms[roomID]) {
+            rooms[roomID].push(socket.id);
+        } else {
+            rooms[roomID] = [socket.id];
+        }
+        const otherUser = rooms[roomID].find(id => id !== socket.id);
+        if (otherUser) {
+            socket.emit("other user", otherUser);
+            socket.to(otherUser).emit("user joined", socket.id);
+        }
+    });
 
-app.get('/', (req, res) => {
-    res.render('index');
+    socket.on("offer", payload => {
+        io.to(payload.target).emit("offer", payload);
+    });
+
+    socket.on("answer", payload => {
+        io.to(payload.target).emit("answer", payload);
+    });
+
+    socket.on("ice-candidate", incoming => {
+        io.to(incoming.target).emit("ice-candidate", incoming.candidate);
+    });
 });
 
-app.get('/create_meeting', (req, res) => {
-    const meetingId = uuidv4();
-    res.redirect(`/meeting/${meetingId}`);
-});
 
-app.get('/meeting/:meetingId', (req, res) => {
-    const meetingId = req.params.meetingId;
-    res.send(`<h1>Meeting ID: ${meetingId}</h1>`);
-});
-
-io.on('connection', (socket) => {
-    console.log('a user connected');
-});
-
-app.listen(port, () => {
-    console.log(`Appointer Meeting Server at http://localhost:${port}`);
-});
+server.listen(8000, () => console.log('server is running on port 8000'));
