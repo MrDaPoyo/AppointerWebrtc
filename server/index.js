@@ -19,5 +19,11 @@ io.on('connection', (socket) => {
             socket.broadcast.to(userId).emit("user-answer", userId, offer);
             io.sockets.in(roomId).emit("text");
         });
+
+        socket.on("disconnect", () => {
+            socket.broadcast.to(roomId).emit("user-disconnected", userId);
+        });
     });
 });
+
+io.listen(3000);
